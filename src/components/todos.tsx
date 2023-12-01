@@ -1,17 +1,26 @@
-import type { Todo } from '../types'
+import { Todo } from '../db/schema'
 
-function TodoItem({ id, content, completed }: Todo) {
+export function TodoItem({ id, content, completed }: Todo) {
 	return (
 		<div class='flex p-2 my-1 bg-blue-300 rounded-md items-center justify-between space-x-3 min-w-[300px] shadow pb-2 border'>
 			<p>{content}</p>
-			<div class='space-x-3'>
+			<span class='space-x-3'>
 				<input
 					type='checkbox'
-					class='cursor-pointer w-4 h-4 border-2 border-gray-300 rounded-md'
+					hx-target='closest div'
+					hx-swap='outerHTML'
 					checked={completed}
+					hx-post={`/todos/toggle/${id}`}
+					class='cursor-pointer w-4 h-4 border-2 border-gray-300 rounded-md'
 				/>
-				<button class='text-red-500'>X</button>
-			</div>
+				<button
+					hx-swap='outerHTML'
+					class='text-red-500'
+					hx-target='closest div'
+					hx-delete={`/todos/${id}`}>
+					X
+				</button>
+			</span>
 		</div>
 	)
 }
@@ -22,6 +31,26 @@ export function TodoList({ todos }: { todos: Todo[] }) {
 			{todos.map((todo) => (
 				<TodoItem {...todo} />
 			))}
+
+			<CreateTodo />
 		</div>
+	)
+}
+
+export function CreateTodo() {
+	return (
+		<form
+			_='on submit target.reset()'
+			hx-post='/todos'
+			hx-swap='beforebegin'
+			class='flex space-x-3'>
+			<input
+				type='text'
+				name='content'
+				class='border border-black'
+			/>
+
+			<button type='submit'>Submit</button>
+		</form>
 	)
 }

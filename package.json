@@ -7,10 +7,13 @@
 	},
 	"dependencies": {
 		"@elysiajs/html": "^0.7.3",
+		"@libsql/client": "^0.4.0-pre.5",
+		"drizzle-orm": "^0.29.1",
 		"elysia": "latest"
 	},
 	"devDependencies": {
-		"bun-types": "latest"
+		"bun-types": "latest",
+		"drizzle-kit": "^0.20.6"
 	},
 	"module": "src/index.js"
 }
